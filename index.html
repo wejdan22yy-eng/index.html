@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة صنع العصير التفاعلية</title>
+    <style>
+        body {
+            font-family: 'Cairo', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #fce4ec, #e0f7fa);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        h1 {
+            color: #d81b60;
+            margin-bottom: 5px;
+            text-align: center;
+            font-size: 2rem;
+        }
+        p.instructions {
+            color: #00796b;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            max-width: 500px;
+            width: 100%;
+        }
+        .scene {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 25px;
+            min-height: 220px;
+        }
+        .fruits-shelf {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .fruit {
+            width: 70px;
+            height: 70px;
+            cursor: pointer;
+            transition: transform 0.2s, filter 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .fruit:hover {
+            transform: scale(1.1);
+        }
+        .fruit img {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+        }
+        .blender-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .blender {
+            width: 120px;
+            height: 180px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 4px solid #37474f;
+            border-radius: 10px 10px 20px 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .blender-lid {
+            width: 90px;
+            height: 20px;
+            background: #e91e63;
+            border-radius: 10px 10px 0 0;
+            position: absolute;
+            top: -24px;
+        }
+        .blender-base {
+            width: 130px;
+            height: 50px;
+            background: #ffb74d;
+            border-radius: 0 0 15px 15px;
+            border: 3px solid #f57c00;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .blender-button {
+            width: 25px;
+            height: 25px;
+            background: #d32f2f;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+        }
+        .liquid {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 0%;
+            transition: height 0.8s ease-in-out, background-color 0.5s;
+        }
+        .result-box {
+            margin-top: 15px;
+            text-align: center;
+            min-height: 120px;
+        }
+        .result-img {
+            width: 90px;
+            height: 110px;
+            object-fit: contain;
+            display: none;
+            animation: bounceIn 0.5s ease;
+        }
+        .message {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #c2185b;
+            margin-top: 10px;
+        }
+        .speaker-btn {
+            background: #00897b;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 8px;
+            display: none;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        .speaker-btn:hover {
+            background: #00695c;
+        }
+        footer {
+            margin-top: 25px;
+            font-size: 0.95rem;
+            color: #455a64;
+            font-weight: bold;
+            text-align: center;
+            border-top: 2px dashed #b0bec5;
+            padding-top: 10px;
+            width: 100%;
+            max-width: 500px;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            70% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <h1>لعبة صنع العصير التفاعلية</h1>
+        <p class="instructions">اضغط على الفاكهة لضعها في الخلاط واصنع عصيرك المفضل!</p>
+
+        <div class="scene">
+            <!-- قائمة الفواكه -->
+            <div class="fruits-shelf">
+                <div class="fruit" onclick="makeJuice('orange', 'عصير برتقال', '#ffa726', 'https://cdn-icons-png.flaticon.com/512/1529/1529633.png', 'https://cdn-icons-png.flaticon.com/512/3132/3132711.png')" title="برتقال">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1529/1529633.png" alt="برتقال">
+                </div>
+                <div class="fruit" onclick="makeJuice('lemon', 'عصير ليمون', '#d4e157', 'https://cdn-icons-png.flaticon.com/512/1122/1122199.png', 'https://cdn-icons-png.flaticon.com/512/2934/2934394.png')" title="ليمون">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1122/1122199.png" alt="ليمون">
+                </div>
+                <div class="fruit" onclick="makeJuice('watermelon', 'عصير بطيخ', '#ef5350', 'https://cdn-icons-png.flaticon.com/512/4151/4151801.png', 'https://cdn-icons-png.flaticon.com/512/3014/3014815.png')" title="بطيخ">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4151/4151801.png" alt="بطيخ">
+                </div>
+            </div>
+
+            <!-- الخلاط -->
+            <div class="blender-area">
+                <div class="blender">
+                    <div class="blender-lid"></div>
+                    <div id="liquid" class="liquid"></div>
+                </div>
+                <div class="blender-base">
+                    <div class="blender-button" onclick="blendActive()"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- النتيجة -->
+        <div class="result-box">
+            <img id="resultImg" class="result-img" src="" alt="كوب العصير">
+            <div id="message" class="message"></div>
+            <button id="speakerBtn" class="speaker-btn" onclick="speakCurrent()">🔊 استمع ببطء</button>
+        </div>
+    </div>
+
+    <footer>
+        صممت بواسطة المعلمة وجدان عبد الرحمن الزهراني
+    </footer>
+
+    <script>
+        let currentText = "";
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                let utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ar-SA';
+                utterance.rate = 0.55; // صوت بطيء وواضح جداً للأطفال
+                utterance.pitch = 1.1;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function makeJuice(type, text, color, fruitImg, juiceImg) {
+            currentText = text;
+            let liquid = document.getElementById('liquid');
+            let resultImg = document.getElementById('resultImg');
+            let message = document.getElementById('message');
+            let speakerBtn = document.getElementById('speakerBtn');
+
+            // إعادة تعيين
+            liquid.style.height = '0%';
+            resultImg.style.display = 'none';
+            message.innerText = "جاري عصر الفاكهة...";
+            speakerBtn.style.display = 'none';
+
+            setTimeout(() => {
+                liquid.style.backgroundColor = color;
+                liquid.style.height = '75%';
+            }, 300);
+
+            setTimeout(() => {
+                resultImg.src = juiceImg;
+                resultImg.style.display = 'inline-block';
+                message.innerText = text;
+                speakerBtn.style.display = 'inline-flex';
+                speak(text);
+            }, 1200);
+        }
+
+        function blendActive() {
+            if (currentText) {
+                speak(currentText);
+            } else {
+                speak("اختر الفاكهة أولاً");
+            }
+        }
+
+        function speakCurrent() {
+            if (currentText) {
+                speak(currentText);
+            }
+        }
+    </script>
+</body>
+</html>
