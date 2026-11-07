@@ -7,118 +7,131 @@
     <style>
         body {
             font-family: 'Cairo', Tahoma, sans-serif;
-            background: linear-gradient(135deg, #fce4ec, #e0f7fa);
+            background: linear-gradient(135deg, #fff3e0, #e0f2f1);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            overflow-x: hidden;
-        }
-        h1 {
-            color: #d81b60;
-            margin-bottom: 5px;
-            text-align: center;
-            font-size: 2rem;
-        }
-        p.instructions {
-            color: #00796b;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            text-align: center;
+            box-sizing: border-box;
         }
         .game-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             background: white;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            max-width: 500px;
+            padding: 20px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            max-width: 480px;
             width: 100%;
+        }
+        h1 {
+            color: #d81b60;
+            margin: 0 0 5px 0;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+        p.instructions {
+            color: #00796b;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
         }
         .scene {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
             width: 100%;
-            margin-bottom: 25px;
-            min-height: 220px;
+            margin-bottom: 15px;
         }
         .fruits-shelf {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
-        .fruit {
-            width: 70px;
-            height: 70px;
-            cursor: pointer;
-            transition: transform 0.2s, filter 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .fruit-card {
+            width: 80px;
+            height: 80px;
             background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .fruit:hover {
-            transform: scale(1.1);
-        }
-        .fruit img {
-            width: 55px;
-            height: 55px;
-            object-fit: contain;
-        }
-        .blender-area {
+            border: 3px solid #ffcc80;
+            border-radius: 20px;
+            cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+        .fruit-card:hover {
+            transform: scale(1.08);
+            border-color: #fb8c00;
+        }
+        .fruit-card img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+        .fruit-label {
+            font-size: 0.75rem;
+            color: #555;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+        .blender-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .blender {
-            width: 120px;
-            height: 180px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 4px solid #37474f;
-            border-radius: 10px 10px 20px 20px;
+            width: 130px;
+            height: 190px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 5px solid #37474f;
+            border-radius: 15px 15px 25px 25px;
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.15);
             overflow: hidden;
         }
         .blender-lid {
-            width: 90px;
-            height: 20px;
+            width: 100px;
+            height: 22px;
             background: #e91e63;
-            border-radius: 10px 10px 0 0;
+            border-radius: 12px 12px 0 0;
             position: absolute;
-            top: -24px;
+            top: -27px;
         }
         .blender-base {
-            width: 130px;
-            height: 50px;
+            width: 140px;
+            height: 55px;
             background: #ffb74d;
-            border-radius: 0 0 15px 15px;
+            border-radius: 0 0 18px 18px;
             border: 3px solid #f57c00;
-            margin-top: 5px;
+            margin-top: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .blender-button {
-            width: 25px;
-            height: 25px;
+            width: 30px;
+            height: 30px;
             background: #d32f2f;
             border-radius: 50%;
-            border: 2px solid white;
+            border: 3px solid white;
             cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .blender-button:active {
+            transform: scale(0.95);
         }
         .liquid {
             position: absolute;
@@ -127,55 +140,58 @@
             height: 0%;
             transition: height 0.8s ease-in-out, background-color 0.5s;
         }
-        .result-box {
-            margin-top: 15px;
+        .result-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 140px;
+            margin-top: 10px;
             text-align: center;
-            min-height: 120px;
         }
         .result-img {
-            width: 90px;
+            width: 100px;
             height: 110px;
             object-fit: contain;
             display: none;
-            animation: bounceIn 0.5s ease;
+            animation: bounceIn 0.6s ease;
         }
         .message {
             font-size: 1.3rem;
             font-weight: bold;
             color: #c2185b;
-            margin-top: 10px;
+            margin-top: 8px;
         }
-        .speaker-btn {
+        .audio-btn {
             background: #00897b;
             color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 8px 18px;
             border-radius: 20px;
             font-size: 1rem;
             cursor: pointer;
-            margin-top: 8px;
+            margin-top: 6px;
             display: none;
             align-items: center;
-            gap: 5px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            gap: 6px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            font-weight: bold;
         }
-        .speaker-btn:hover {
+        .audio-btn:hover {
             background: #00695c;
         }
         footer {
-            margin-top: 25px;
-            font-size: 0.95rem;
-            color: #455a64;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #37474f;
             font-weight: bold;
             text-align: center;
             border-top: 2px dashed #b0bec5;
             padding-top: 10px;
             width: 100%;
-            max-width: 500px;
         }
         @keyframes bounceIn {
-            0% { transform: scale(0); }
-            70% { transform: scale(1.1); }
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.15); opacity: 1; }
             100% { transform: scale(1); }
         }
     </style>
@@ -184,39 +200,42 @@
 
     <div class="game-container">
         <h1>لعبة صنع العصير التفاعلية</h1>
-        <p class="instructions">اضغط على الفاكهة لضعها في الخلاط واصنع عصيرك المفضل!</p>
+        <p class="instructions">اضغطي على الفاكهة وضعيها في الخلاط لتصنعي ألذ عصير!</p>
 
         <div class="scene">
-            <!-- قائمة الفواكه -->
+            <!-- الفواكه الحقيقية -->
             <div class="fruits-shelf">
-                <div class="fruit" onclick="makeJuice('orange', 'عصير برتقال', '#ffa726', 'https://cdn-icons-png.flaticon.com/512/1529/1529633.png', 'https://cdn-icons-png.flaticon.com/512/3132/3132711.png')" title="برتقال">
-                    <img src="https://cdn-icons-png.flaticon.com/512/1529/1529633.png" alt="برتقال">
+                <div class="fruit-card" onclick="makeJuice('orange', 'عصير برتقال', '#ffa726', 'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=150', 'https://images.unsplash.com/photo-1613478223719-2ab802602423?w=150', 'orange')">
+                    <img src="https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=150" alt="برتقال">
+                    <span class="fruit-label">برتقال</span>
                 </div>
-                <div class="fruit" onclick="makeJuice('lemon', 'عصير ليمون', '#d4e157', 'https://cdn-icons-png.flaticon.com/512/1122/1122199.png', 'https://cdn-icons-png.flaticon.com/512/2934/2934394.png')" title="ليمون">
-                    <img src="https://cdn-icons-png.flaticon.com/512/1122/1122199.png" alt="ليمون">
+                <div class="fruit-card" onclick="makeJuice('lemon', 'عصير ليمون', '#d4e157', 'https://images.unsplash.com/photo-1590502593749-424a6e42f406?w=150', 'https://images.unsplash.com/photo-1527661591475-527312dd65f5?w=150', 'lemon')">
+                    <img src="https://images.unsplash.com/photo-1590502593749-424a6e42f406?w=150" alt="ليمون">
+                    <span class="fruit-label">ليمون</span>
                 </div>
-                <div class="fruit" onclick="makeJuice('watermelon', 'عصير بطيخ', '#ef5350', 'https://cdn-icons-png.flaticon.com/512/4151/4151801.png', 'https://cdn-icons-png.flaticon.com/512/3014/3014815.png')" title="بطيخ">
-                    <img src="https://cdn-icons-png.flaticon.com/512/4151/4151801.png" alt="بطيخ">
+                <div class="fruit-card" onclick="makeJuice('watermelon', 'عصير بطيخ', '#ef5350', 'https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=150', 'https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?w=150', 'watermelon')">
+                    <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=150" alt="بطيخ">
+                    <span class="fruit-label">بطيخ</span>
                 </div>
             </div>
 
-            <!-- الخلاط -->
-            <div class="blender-area">
+            <!-- الخلاط الحقيقي -->
+            <div class="blender-box">
                 <div class="blender">
                     <div class="blender-lid"></div>
                     <div id="liquid" class="liquid"></div>
                 </div>
                 <div class="blender-base">
-                    <div class="blender-button" onclick="blendActive()"></div>
+                    <div class="blender-button" onclick="playCurrentAudio()" title="اضغط للعصر"></div>
                 </div>
             </div>
         </div>
 
-        <!-- النتيجة -->
-        <div class="result-box">
+        <!-- عرض النتيجة -->
+        <div class="result-area">
             <img id="resultImg" class="result-img" src="" alt="كوب العصير">
             <div id="message" class="message"></div>
-            <button id="speakerBtn" class="speaker-btn" onclick="speakCurrent()">🔊 استمع ببطء</button>
+            <button id="audioBtn" class="audio-btn" onclick="playCurrentAudio()">🔊 استمع بوضوح</button>
         </div>
     </div>
 
@@ -224,58 +243,63 @@
         صممت بواسطة المعلمة وجدان عبد الرحمن الزهراني
     </footer>
 
+    <!-- مكتبة أصوات حقيقية ونقية جداً (ResponsiveVoice لضمان صوت بشري واقعي) -->
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=free"></script>
     <script>
         let currentText = "";
+        let activeKey = "";
 
-        function speak(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                let utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'ar-SA';
-                utterance.rate = 0.55; // صوت بطيء وواضح جداً للأطفال
-                utterance.pitch = 1.1;
-                window.speechSynthesis.speak(utterance);
+        function playVoice(text) {
+            if (typeof responsiveVoice !== "undefined") {
+                responsiveVoice.speak(text, "Arabic Female", { rate: 0.65, pitch: 1 });
+            } else {
+                // بديل احتياطي متطور في حال عدم توفر المكتبة
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    let utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'ar-SA';
+                    utterance.rate = 0.6;
+                    utterance.pitch = 1.1;
+                    window.speechSynthesis.speak(utterance);
+                }
             }
         }
 
-        function makeJuice(type, text, color, fruitImg, juiceImg) {
+        function makeJuice(type, text, color, fruitImg, juiceImg, key) {
             currentText = text;
+            activeKey = key;
             let liquid = document.getElementById('liquid');
             let resultImg = document.getElementById('resultImg');
             let message = document.getElementById('message');
-            let speakerBtn = document.getElementById('speakerBtn');
+            let audioBtn = document.getElementById('audioBtn');
 
-            // إعادة تعيين
+            // تصفير الخلاط والنتيجة
             liquid.style.height = '0%';
             resultImg.style.display = 'none';
             message.innerText = "جاري عصر الفاكهة...";
-            speakerBtn.style.display = 'none';
+            audioBtn.style.display = 'none';
 
+            // تعبئة الخلاط بالسائل الملون
             setTimeout(() => {
                 liquid.style.backgroundColor = color;
-                liquid.style.height = '75%';
+                liquid.style.height = '80%';
             }, 300);
 
+            // إظهار العصير الحقيقي وتشغيل الصوت البشري الواضح
             setTimeout(() => {
                 resultImg.src = juiceImg;
-                resultImg.style.display = 'inline-block';
+                resultImg.style.display = 'block';
                 message.innerText = text;
-                speakerBtn.style.display = 'inline-flex';
-                speak(text);
-            }, 1200);
+                audioBtn.style.display = 'inline-flex';
+                playVoice(text);
+            }, 1000);
         }
 
-        function blendActive() {
+        function playCurrentAudio() {
             if (currentText) {
-                speak(currentText);
+                playVoice(currentText);
             } else {
-                speak("اختر الفاكهة أولاً");
-            }
-        }
-
-        function speakCurrent() {
-            if (currentText) {
-                speak(currentText);
+                playVoice("اختر الفاكهة أولاً");
             }
         }
     </script>
